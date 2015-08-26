@@ -25,7 +25,13 @@
     [afRequest GET:urlString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"Response object = %@", responseObject);
         DayRate *dayRateObject = [DayRate new];
-        dayRateObject.day = [responseObject objectForKey:@"Day"];
+        NSString *str  = [responseObject objectForKey:@"Day"];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"YYYY'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
+        NSDate *day = [formatter dateFromString:str];
+        [formatter setDateFormat:@"MM/dd/yyyy"];
+        
+        dayRateObject.day = [formatter stringFromDate:day];
         dayRateObject.rates = [responseObject objectForKey:@"Rates"];
         completionHandler(dayRateObject, YES, nil);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -54,7 +60,13 @@
         NSMutableArray *dayRateObjects = [NSMutableArray new];
         for (int i = 0; i < responseObjectArray.count; i++) {
             DayRate *dayRateObject = [DayRate new];
-            dayRateObject.day = [responseObjectArray[i] objectForKey:@"Day"];
+            NSString *str  = [responseObjectArray[i] objectForKey:@"Day"];
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"YYYY'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
+            NSDate *day = [formatter dateFromString:str];
+            [formatter setDateFormat:@"MM/dd/yyyy"];
+            
+            dayRateObject.day = [formatter stringFromDate:day];
             dayRateObject.rates = [responseObjectArray[i] objectForKey:@"Rates"];
             [dayRateObjects addObject:dayRateObject];
         }

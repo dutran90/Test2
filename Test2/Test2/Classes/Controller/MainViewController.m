@@ -249,6 +249,7 @@
     // Remove all objects from the filtered search array
     [_filterDayRateObjects removeAllObjects];
     _filterDayRateObjects = [NSMutableArray new];
+    BOOL hasAddToFilter = NO;
     
     _isFilter = YES;
     for (int i = 0; i < _dayRateObjects.count; i++) {
@@ -261,9 +262,12 @@
             if ([[rateDictionary objectForKey:@"Id"] rangeOfString:searchText].location != NSNotFound) {
                 [ratesNew addObject:rateDictionary];
                 dayRateObjectNew.rates = ratesNew;
+                hasAddToFilter = YES;
             }
         }
-        [_filterDayRateObjects addObject:dayRateObjectNew];
+        if (hasAddToFilter) {
+            [_filterDayRateObjects addObject:dayRateObjectNew];
+        }
     }
 }
 
